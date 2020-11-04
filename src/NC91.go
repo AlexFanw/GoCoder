@@ -3,8 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	inp := []int{2,1,5,3,6,4,8,9,7}
-	LIS(inp)
+	inp := []int{1,2,8,6,4}
+	fmt.Println(LIS(inp))
 }
 /*
 能想到动态规划就很不错了。
@@ -27,7 +27,6 @@ func LIS( arr []int ) []int {
 		max := 1
 		for index, val := range arr[0:arrindex]{
 			if val < arr[arrindex]{
-				fmt.Println(arr[arrindex])
 				if(max < dp[index]+1){
 					max = dp[index]+1
 				}
@@ -35,6 +34,25 @@ func LIS( arr []int ) []int {
 		}
 		dp = append(dp, max)
 	}
-	fmt.Println(dp)
-	return dp;
+	//这上面可以得出以每一个元素结尾的最大递增长度
+
+	//找出最大的子序列，而且一定是最靠后的那个才是我们要找的
+	max := 0
+	maxindex := 0
+	for index,val := range dp{
+		if val>=max{
+			max = val
+			maxindex = index
+		}
+	}
+
+	//恢复出子序列
+	res := []int{arr[maxindex]}
+	for i:=maxindex-1;i>=0;i--{
+		if arr[i] < arr[maxindex] && dp[i] == max-1{
+			res = append([]int{arr[i]},res...)
+			max-=1
+		}
+	}
+	return res;
 }
