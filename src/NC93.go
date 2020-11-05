@@ -14,45 +14,18 @@ package main
 func main() {
 	
 }
-
-func LRU( operators [][]int ,  k int ) []int {
-	// write code here
-	res := make([]int, 0 ,len(operators))
-	key := make([]int, k)
-	value := make([]int, k)
-	for _,val := range operators{
-		// 进入的操作我们模仿队列，先进先出
-		if val[0] == 1{
-			if len(key) == k{
-				key = key[1:]
-				value = value[1:]
-			}
-
-			key = append(key, val[1])
-			value = append(value, val[2])
-		} else if val[0] == 2{
-
-			index := -1
-			for i,v := range key{
-				if val[1] == v{
-					index = i
-					break
-				}
-			}
-
-			if index==-1{
-				res = append(res, -1)
-			}else {
-				res = append(res, value[index])
-				//将最近查找的这个index放到队列的尾部。表示它是最新的
-				if index < k-1{
-
-					key = append(key[:index],append(key[index+1:], key[index])...)
-					value = append(value[:index],append(value[index+1:],value[index])...)
-				}
-			}
-		}
-	}
-
-	return res
+//Cache总结构
+type LRUCache struct {
+	size int
+	capacity int
+	cache map[int] *DlinkedNode
+	head, tail *DlinkedNode
 }
+//双向链表
+type DlinkedNode struct {
+	key, value int
+	prev, next *DlinkedNode
+}
+//func LRU( operators [][]int ,  k int ) []int {
+//
+//}
